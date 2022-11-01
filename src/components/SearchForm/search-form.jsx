@@ -30,13 +30,14 @@ function Form({ onSubmit }) {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container alignItems="center" justify="center" direction="column">
+      <Grid container alignItems="center" justify="center">
         <Grid item>
           <TextField
             id="address-input"
             name="address"
             label="Address"
             type="text"
+            required
             value={formValues.address}
             onChange={handleInputChange}
           />

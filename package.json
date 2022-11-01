@@ -61,7 +61,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@arcblock/eslint-config": "^0.2.3",

@@ -98,7 +98,14 @@ export function StickyHeadTable({ rows = [], page, onChangePage }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination component="div" count={rows.length} page={page} onPageChange={handleChangePage} />
+      <TablePagination
+        rowsPerPageOptions={[50]}
+        component="div"
+        rowsPerPage={50}
+        count={rows.length || 0}
+        page={page || 0}
+        onPageChange={handleChangePage}
+      />
     </Paper>
   );
 }
@@ -150,7 +157,7 @@ function Etherscan() {
         <SearchForm onSubmit={setParams} />
         <StickyHeadTable
           rows={data}
-          handleChangePage={(page) => setParams((args) => ({ ...args, page }))}
+          onChangePage={(page) => setParams((args) => ({ ...args, page }))}
           page={params.page}
         />
         <Modal open={loading} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
