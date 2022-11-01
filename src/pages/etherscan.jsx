@@ -15,54 +15,54 @@ import SearchForm from '../components/SearchForm/search-form';
 import { getEtherscanData } from '../utils/get-etherscan';
 
 const columns = [
-  { id: 'txHash', label: 'Txn Hash', minWidth: 170 },
-  { id: 'method', label: 'Method', minWidth: 100 },
+  { id: 'txHash', label: 'Txn Hash', maxWidth: 170 },
+  { id: 'method', label: 'Method', maxWidth: 100 },
   {
     id: 'block',
     label: 'Block',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     // format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'age',
     label: 'age',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     // format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'from',
     label: 'from',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     // format: (value) => value.toFixed(2),
   },
   {
     id: 'to',
     label: 'to',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     // format: (value) => value.toFixed(2),
   },
   {
     id: 'value',
     label: 'value',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     format: (value) => value.toFixed(2),
   },
   {
     id: 'txFee',
     label: 'txFee',
-    minWidth: 170,
+    maxWidth: 170,
     align: 'right',
     // format: (value) => value.toFixed(2),
   },
 ];
 
 // eslint-disable-next-line react/prop-types
-export function StickyHeadTable({ rows = [], page, onChangePage }) {
+export function StickyHeadTable({ rows = [], count = 0, page, onChangePage }) {
   const handleChangePage = (event, newPage) => {
     onChangePage(newPage);
   };
@@ -87,7 +87,10 @@ export function StickyHeadTable({ rows = [], page, onChangePage }) {
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ maxWidth: column.maxWidth, wordBreak: 'break-all' }}>
                         {column.format && typeof value === 'number' ? column.format(value) : value}
                       </TableCell>
                     );
@@ -102,7 +105,7 @@ export function StickyHeadTable({ rows = [], page, onChangePage }) {
         rowsPerPageOptions={[50]}
         component="div"
         rowsPerPage={50}
-        count={rows.length || 0}
+        count={count * 50 || 0}
         page={page || 0}
         onPageChange={handleChangePage}
       />
@@ -116,7 +119,7 @@ function useEtherscanQuery(address, page = 1) {
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
     async function getData() {
-      let res = [];
+      let res = {};
       try {
         setError(null);
         setLoading(true);
@@ -149,14 +152,15 @@ const modalStyle = {
   p: 4,
 };
 function Etherscan() {
-  const [params, setParams] = React.useState({ page: 1 });
+  const [params, setParams] = React.useState({ page: 0 });
   const { data, loading } = useEtherscanQuery(params.address, params.page);
   return (
     <div>
       <Container maxWidth="lg">
         <SearchForm onSubmit={setParams} />
         <StickyHeadTable
-          rows={data}
+          rows={data.data}
+          count={data.pages}
           onChangePage={(page) => setParams((args) => ({ ...args, page }))}
           page={params.page}
         />

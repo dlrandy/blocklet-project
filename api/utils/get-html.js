@@ -2,13 +2,13 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 
 const getEtherscanHtml = async (address, page) => {
-  const { data } = await axios.get(`https://etherscan.io/txs?a=${address}&p=${page}`);
+  const { data } = await axios.get(`https://etherscan.io/txs?a=${address}&p=${page + 1}`);
   return data;
 };
 
-const extractContent = (data) => {
-  const $ = cheerio.load(data);
-  return $('#paywall_mask tbody tr')
+const extractContent = (html) => {
+  const $ = cheerio.load(html);
+  const data = $('#paywall_mask tbody tr')
     .map((_, product) => {
       const $product = $(product);
 
@@ -24,5 +24,7 @@ const extractContent = (data) => {
       };
     })
     .toArray();
+  const pages = $('#ContentPlaceHolder1_pageRecords ul.pagination li:nth-child(3) strong:nth-child(2)').text();
+  return { data, pages };
 };
 module.exports = { extractContent, getEtherscanHtml };

@@ -12,7 +12,7 @@ const getEtherscanKey = (req) => {
 router.use('/user', middleware.user(), (req, res) => res.json(req.user || {}));
 
 router.use('/txs', cacheFactory(getEtherscanKey), async (req, res) => {
-  const { page = 1, a: address } = req.query;
+  const { page = 0, a: address } = req.query;
   const errors = etherscanValidate(address, page);
   if (errors.length > 0) {
     return res.json({ errorCode: 400, errors });
@@ -24,7 +24,7 @@ router.use('/txs', cacheFactory(getEtherscanKey), async (req, res) => {
     const str = JSON.stringify(data);
     redis.set(getEtherscanKey(req), str, 'ex', 15);
   }
-  return res.json(data || []);
+  return res.json(data || { pages: 0, data: [] });
 });
 
 module.exports = router;
