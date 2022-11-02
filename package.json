@@ -9,6 +9,7 @@
     "start": "npm-run-all --parallel start:*",
     "start:client": "vite --host",
     "start:api": "cross-env NODE_ENV=development nodemon api/index.js -w api",
+    "test:unit": "vitest --environment jsdom --ui",
     "clean": "node scripts/build-clean.js",
     "bundle": "npm run bundle:client && npm run bundle:api",
     "bundle:client": "vite build",
@@ -67,10 +68,12 @@
   "devDependencies": {
     "@arcblock/eslint-config": "^0.2.3",
     "@vitejs/plugin-react": "^2.1.0",
+    "@vitest/ui": "^0.24.5",
     "bumpp": "^8.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.25.0",
     "husky": "^8.0.1",
+    "jsdom": "^20.0.2",
     "lint-staged": "^12.5.0",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "nodemon": "^2.0.20",
@@ -81,6 +84,7 @@
     "vite-plugin-blocklet": "^0.4.79",
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-svgr": "^2.2.2",
+    "vitest": "^0.24.5",
     "zx": "^7.1.1"
   }
 }
