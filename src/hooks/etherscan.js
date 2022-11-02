@@ -1,7 +1,7 @@
 import React from 'react';
 import { getEtherscanData } from '../utils/get-etherscan';
 
-export function useEtherscanQuery({ address, page = 1 }) {
+export function useEtherscanQuery(address, page = 1) {
   const [data, setData] = React.useState({});
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -14,7 +14,6 @@ export function useEtherscanQuery({ address, page = 1 }) {
         res = await getEtherscanData(address, page);
         setData(res);
       } catch (err) {
-        // console.log(err);
         setError(err);
       } finally {
         setLoading(false);

@@ -56,7 +56,7 @@ const columns = [
 ];
 
 function Etherscan() {
-  const [params, setParams] = React.useState({ page: 0 });
+  const [params, setParams] = React.useState({ page: 0, address: '' });
   const { data, loading } = useEtherscanQuery(params.address, params.page);
   return (
     <div>

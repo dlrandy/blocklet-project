@@ -57,7 +57,7 @@ function Form({ onSubmit }) {
             inputProps={{ 'data-testid': 'etherscan-page' }}
           />
         </Grid>
-        <Button disabled={isSubmitting} variant="contained" color="primary" type="submit">
+        <Button id="etherscan-search" disabled={isSubmitting} variant="contained" color="primary" type="submit">
           Search
         </Button>
       </Grid>
