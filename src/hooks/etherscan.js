@@ -2,7 +2,7 @@ import React from 'react';
 import { getEtherscanData } from '../utils/get-etherscan';
 
 export function useEtherscanQuery({ address, page = 1 }) {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState({});
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {

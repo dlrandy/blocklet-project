@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 
 const defaultValues = {
-  name: '',
-  page: 0,
+  address: '',
+  page: '',
 };
 Form.propTypes = {
   onSubmit: PropTypes.func,
@@ -15,6 +15,7 @@ Form.defaultProps = {
   onSubmit: () => '',
 };
 function Form({ onSubmit }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formValues, setFormValues] = useState(defaultValues);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,12 +25,14 @@ function Form({ onSubmit }) {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSubmit(formValues);
+    setIsSubmitting(true);
+    await onSubmit(formValues);
+    setIsSubmitting(false);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="search-form">
       <Grid container alignItems="center" justify="center">
         <Grid item>
           <TextField
@@ -40,6 +43,7 @@ function Form({ onSubmit }) {
             required
             value={formValues.address}
             onChange={handleInputChange}
+            inputProps={{ 'data-testid': 'etherscan-address' }}
           />
         </Grid>
         <Grid item>
@@ -50,9 +54,10 @@ function Form({ onSubmit }) {
             type="number"
             value={formValues.page}
             onChange={handleInputChange}
+            inputProps={{ 'data-testid': 'etherscan-page' }}
           />
         </Grid>
-        <Button variant="contained" color="primary" type="submit">
+        <Button disabled={isSubmitting} variant="contained" color="primary" type="submit">
           Search
         </Button>
       </Grid>
