@@ -10,6 +10,7 @@
     "start:client": "vite --host",
     "start:api": "cross-env NODE_ENV=development nodemon api/index.js -w api",
     "test:unit": "vitest --environment jsdom",
+    "test:be:unit": "vitest --environment node --dir api",
     "test:e2e": "cypress open",
     "clean": "node scripts/build-clean.js",
     "bundle": "npm run bundle:client && npm run bundle:api",

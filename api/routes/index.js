@@ -1,7 +1,8 @@
 const middleware = require('@blocklet/sdk/lib/middlewares');
 const router = require('express').Router();
 const { extractContent, getEtherscanHtml } = require('../utils/get-html');
-const { redis, cacheFactory } = require('../middlewares/cache');
+const { cacheFactory } = require('../middlewares/cache');
+const redisIns = require('../libs/redis');
 const etherscanValidate = require('../validators/etherscan.validator');
 
 const getEtherscanKey = (req) => {
@@ -11,7 +12,7 @@ const getEtherscanKey = (req) => {
 };
 router.use('/user', middleware.user(), (req, res) => res.json(req.user || {}));
 
-router.use('/txs', cacheFactory(getEtherscanKey), async (req, res) => {
+router.use('/txs', cacheFactory(getEtherscanKey, redisIns), async (req, res) => {
   const { page = 0, a: address } = req.query;
   const errors = etherscanValidate(address, page);
   if (errors.length > 0) {
@@ -22,7 +23,7 @@ router.use('/txs', cacheFactory(getEtherscanKey), async (req, res) => {
   const data = isMatching ? extractContent(ethers) : [];
   if (isMatching) {
     const str = JSON.stringify(data);
-    redis.set(getEtherscanKey(req), str, 'ex', 15);
+    redisIns.set(getEtherscanKey(req), str, 'ex', 15);
   }
   return res.json(data || { pages: 0, data: [] });
 });

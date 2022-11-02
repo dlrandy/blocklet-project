@@ -1,7 +1,4 @@
-const Redis = require('ioredis');
-
-const redis = new Redis();
-const cacheFactory = (getKeyFn) => (req, res, next) => {
+const cacheFactory = (getKeyFn, redis) => (req, res, next) => {
   const key = getKeyFn(req, res);
   redis.get(key, (error, result) => {
     if (error) throw error;
@@ -11,4 +8,4 @@ const cacheFactory = (getKeyFn) => (req, res, next) => {
     return next();
   });
 };
-module.exports = { redis, cacheFactory };
+module.exports = { cacheFactory };
